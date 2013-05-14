@@ -91,6 +91,7 @@ public:
 
 
 signals:
+    void changed(QAction *action);
     void inserted(QAction *action);
     void actionHovered(QAction *action);
     void actionTriggered(QAction *action);
@@ -100,6 +101,7 @@ protected slots:
     virtual void slotActionTriggered();
 
 private slots:
+    void receiveActionChanged();
     void slotActionHovered();
     void actionDestroyed(QObject *);
     void associatedWidgetDestroyed(QObject *);
