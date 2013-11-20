@@ -40,6 +40,7 @@ set(SOURCES
     uistyle.cpp
     keysequencewidget.cpp
     shortcutsmodel.cpp
+    buffershortcutpopup.cpp
    )
 
 set(MOC_HDRS
@@ -72,6 +73,7 @@ set(MOC_HDRS
     uistyle.h
     keysequencewidget.h
     shortcutsmodel.h
+    buffershortcutpopup.h
    )
 
 set(HEADERS
