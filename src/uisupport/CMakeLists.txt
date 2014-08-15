@@ -31,10 +31,49 @@ set(SOURCES
     toolbaractionprovider.cpp
     uisettings.cpp
     uistyle.cpp
-
+    keysequencewidget.cpp
+    shortcutsmodel.cpp
+    buffershortcutpopup.cpp
     # needed for automoc
     abstractnotificationbackend.h
 )
+=======
+    action.h
+    actioncollection.h
+    bufferhotlistfilter.h
+    bufferview.h
+    bufferviewfilter.h
+    bufferviewoverlayfilter.h
+    clearablelineedit.h
+    clickablelabel.h
+    colorbutton.h
+    contextmenuactionprovider.h
+    flatproxymodel.h
+    fontselector.h
+    graphicalui.h
+    iconloader.h
+    multilineedit.h
+    networkmodelcontroller.h
+    nickview.h
+    nickviewfilter.h
+    resizingstackedwidget.h
+    settingspage.h
+    styledlabel.h
+    tabcompleter.h
+    toolbaractionprovider.h
+    uistyle.h
+    keysequencewidget.h
+    shortcutsmodel.h
+    buffershortcutpopup.h
+   )
+
+set(HEADERS
+    clickable.h
+    icon.h
+    qssparser.h
+    uisettings.h
+   )
+>>>>>>> d62a39d0226af9378ddceb9451ffae325ee5d732
 
 if (KDE4_FOUND)
     include_directories(${KDE4_INCLUDES})
