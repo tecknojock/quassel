@@ -341,12 +341,12 @@ void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &
 
         }
         Qstring emptystring = "";
-        params = params.mid(0, 1) <<  lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, lastbyte.append(bytemessage.left(splitPos)))));
+        params = params.mid(0, 1) <<  lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, emptystring.append(bytemessage.left(splitPos)))));
     }
     net->putCmd("PRIVMSG", params);
 
     if (splitPos < message.count())
-        query(net, bufname, ctcpTag, message.append(bytemessage.mid(splitPos)));
+        query(net, bufname, ctcpTag, emptystring.append(bytemessage.mid(splitPos)));
 }
 
 
