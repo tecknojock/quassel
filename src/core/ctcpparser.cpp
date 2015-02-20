@@ -331,7 +331,7 @@ void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &
         if (splitPos <= 0 || splitPos > maxSplitPos){
                 splitPos = maxSplitPos;
             
-                QByteArray lastbyte = bytemessage.at(splitPos+1);
+                char lastbyte = bytemessage.at(splitPos+1);
                 if (!(lastbyte >> 6 == 0x1 || lastbyte >> 6 == 0x3)){
                     do {
                         splitPos --;
