@@ -310,9 +310,11 @@ QByteArray CtcpParser::pack(const QByteArray &ctcpTag, const QByteArray &message
 }
 
 
-void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &ctcpTag, const QByteArray &message)
+void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &ctcpTag, const QString &message)
 {
     QList<QByteArray> params;
+    QByteArray bytemessage = "";
+    bytemessage.append(message);
     params << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message)));
 
     static const char *splitter = " .,-!?";
@@ -321,30 +323,30 @@ void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &
 
     int overrun = net->userInputHandler()->lastParamOverrun("PRIVMSG", params);
     if (overrun) {
-        maxSplitPos = message.count() - overrun -2;
+        maxSplitPos = bytemessage.count() - overrun -2;
         splitPos = -1;
         for (const char *splitChar = splitter; *splitChar != 0; splitChar++) {
-            splitPos = qMax(splitPos, message.lastIndexOf(*splitChar, maxSplitPos) + 1); // keep split char on old line
+            splitPos = qMax(splitPos, bytemessage.lastIndexOf(*splitChar, maxSplitPos) + 1); // keep split char on old line
         }
         if (splitPos <= 0 || splitPos > maxSplitPos){
                 splitPos = maxSplitPos;
             
-                QByteArray lastbyte = message.at(splitPos+1)
+                QByteArray lastbyte = bytemessage.at(splitPos+1);
                 if (!(lastbyte >> 6 == 0x1 || lastbyte >> 6 == 0x3)){
                     do {
-                        splitPos --
-                        lastbyte = message.at(splitPos)
+                        splitPos --;
+                        lastbyte = bytemessage.at(splitPos);
                     }while(lastbyte << 6 == 0x2)
                 }
 
         }
-
-        params = params.mid(0, 1) <<  lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message.left(splitPos))));
+        Qstring emptystring = "";
+        params = params.mid(0, 1) <<  lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, lastbyte.append(bytemessage.left(splitPos)))));
     }
     net->putCmd("PRIVMSG", params);
 
     if (splitPos < message.count())
-        query(net, bufname, ctcpTag, message.mid(splitPos));
+        query(net, bufname, ctcpTag, message.append(bytemessage.mid(splitPos)));
 }
 
 
