@@ -320,7 +320,7 @@ void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &
     static const char *splitter = " .,-!?";
     int maxSplitPos = message.count();
     int splitPos = maxSplitPos;
-
+    Qstring emptystring = "";
     int overrun = net->userInputHandler()->lastParamOverrun("PRIVMSG", params);
     if (overrun) {
         maxSplitPos = bytemessage.count() - overrun -2;
@@ -340,7 +340,7 @@ void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &
                 }
 
         }
-        Qstring emptystring = "";
+        
         params = params.mid(0, 1) <<  lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, emptystring.append(bytemessage.left(splitPos)))));
     }
     net->putCmd("PRIVMSG", params);
