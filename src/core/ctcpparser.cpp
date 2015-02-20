@@ -310,7 +310,7 @@ QByteArray CtcpParser::pack(const QByteArray &ctcpTag, const QByteArray &message
 }
 
 
-void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &ctcpTag, const QString &message)
+void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &ctcpTag, const QByteArray &message)
 {
     QList<QByteArray> params;
     params << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message)));
@@ -326,8 +326,18 @@ void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &
         for (const char *splitChar = splitter; *splitChar != 0; splitChar++) {
             splitPos = qMax(splitPos, message.lastIndexOf(*splitChar, maxSplitPos) + 1); // keep split char on old line
         }
-        if (splitPos <= 0 || splitPos > maxSplitPos)
-            splitPos = maxSplitPos;
+        if (splitPos <= 0 || splitPos > maxSplitPos){
+                splitPos = maxSplitPos;
+            
+                QByteArray lastbyte = message.at(splitPos+1)
+                if (!(lastbyte >> 6 == 0x1 || lastbyte >> 6 == 0x3)){
+                    do {
+                        splitPos --
+                        lastbyte = message.at(splitPos)
+                    }while(lastbyte << 6 == 0x2)
+                }
+
+        }
 
         params = params.mid(0, 1) <<  lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message.left(splitPos))));
     }
