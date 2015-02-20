@@ -327,15 +327,18 @@ void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &
         splitPos = -1;
         for (const char *splitChar = splitter; *splitChar != 0; splitChar++) {
             splitPos = qMax(splitPos, bytemessage.lastIndexOf(*splitChar, maxSplitPos) + 1); // keep split char on old line
+            cout << "first"
         }
         if (splitPos <= 0 || splitPos > maxSplitPos){
                 splitPos = maxSplitPos;
             
                 char lastbyte = bytemessage.at(splitPos+1);
+                cout << "Second"
                 if (!(lastbyte >> 6 == 0x1 || lastbyte >> 6 == 0x3)){
                     do {
                         splitPos --;
                         lastbyte = bytemessage.at(splitPos);
+                        cout << lastbyte
                     }while(lastbyte << 6 == 0x2);
                 }
 
